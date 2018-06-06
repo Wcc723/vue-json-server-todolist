@@ -69,25 +69,6 @@ export default {
     addTodo () {
       this.isNewTodo = true
       this.currentEdit = {}
-      // const vm = this
-      // const api = 'http://localhost:5000/todos'
-      // if (!vm.message) {
-      //   return
-      // }
-      // const data = {
-      //   timestamp: Math.floor(Date.now() / 1000),
-      //   message: vm.message,
-      //   stared: false,
-      //   comments: []
-      // }
-      // vm.$http.post(api, data).then((response) => {
-      //   console.log(response.data)
-      //   vm.message = ''
-      //   vm.todos.push({
-      //     ...response.data
-      //   })
-      //   vm.updateSort()
-      // })
     },
     getData () {
       const vm = this
@@ -105,13 +86,15 @@ export default {
             const todo = todos.find((item) => item.id === sortId)
             vm.todos.push(todo)
           })
+          todos.forEach((todo) => {
+            const hasSort = sortData.some((sortId) => todo.id === sortId)
+            if (!hasSort) {
+              vm.todos.push(todo)
+            }
+          })
+        } else {
+          vm.todos = todos
         }
-        todos.forEach((todo) => {
-          const hasSort = sortData.some((sortId) => todo.id === sortId)
-          if (!hasSort) {
-            vm.todos.push(todo)
-          }
-        })
       })
     },
     editTodo (id) {

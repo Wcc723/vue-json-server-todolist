@@ -19,3 +19,12 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## 本範例另需要 json-server
+
+安裝方式請參考：https://github.com/typicode/json-server
+
+```
+# 啟用 json-server
+json-server -p 5000 todo.json
+```

@@ -6,7 +6,6 @@ import VueAxios from 'vue-axios'
 import 'animate.css'
 import './assets/all.scss'
 import App from './App'
-import router from './router'
 import dateFilter from './filters/date'
 
 Vue.use(VueAxios, axios)
@@ -17,7 +16,6 @@ Vue.filter('date', dateFilter)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
   components: {
     App
   },
