@@ -1,0 +1,16 @@
+
+@import 'bootstrap/scss/_functions.scss';
+@import './helpers/_variables';
+@import 'bootstrap/scss/bootstrap.scss';
+
+// Custom Style
+@import './components/todo-nav';
+@import './components/todo-item';
+
+body {
+  background-break: #E1E1E1;
+}
+
+.completed {
+  text-decoration: line-through
+}

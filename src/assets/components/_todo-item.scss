@@ -1,0 +1,118 @@
+// todo-item
+.todo-item {
+  display: flex;
+  flex-direction: column;
+  background-color: #F2F2F2;
+  border-radius: 3px;
+  position: relative;
+  &.stared {
+    background-color: $lighten-warning;
+  }
+  &.active {
+    box-shadow: 0 4px 4px rgba(black, .25)
+  }
+  & + .todo-item {
+    margin-top: 24px;
+  }
+
+  // 第二層容器
+  .todo-header {
+    display: flex;
+    padding: 24px 32px 18px 32px;
+  }
+  .todo-footer {
+    padding: 0 32px 24px 72px;
+  }
+  .todo-content {
+    border-top: 2px solid $gray-500;
+    padding: 24px 72px 24px 72px;
+  }
+
+  // header
+  .todo-check {
+    $checkbox-size: 24px;
+    width: 40px;
+    input {
+      position: absolute;
+      opacity: 0;
+      & + label {
+        position: relative;
+        cursor: pointer;
+        padding: 0;
+      }
+      & + label:before {
+        content: '';
+        display: inline-block;
+        vertical-align: text-top;
+        width: $checkbox-size;
+        height: $checkbox-size;
+        background: white;
+      }
+      &:hover + label:before, &:checked + label:before {
+        background: theme-color('primary');
+      }
+      &:focus + label:before {
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+      }
+      &:checked + label:after {
+        content: '';
+        position: absolute;
+        left: 4px;
+        top: 12px;
+        background: white;
+        width: 3px;
+        height: 3px;
+        box-shadow: 
+          2px 0 0 white,
+          4px 0 0 white,
+          6px 0 0 white,
+          6px -2px 0 white,
+          6px -4px 0 white,
+          6px -6px 0 white,
+          6px -8px 0 white,
+          6px -10px 0 white,
+          6px -12px 0 white;
+        transform: rotate(45deg);
+      }
+    }
+    
+  }
+  .todo-title {
+    flex: 1;
+    font-size: 1.5rem;
+  }
+  .todo-control {
+    font-size: 1.5rem;
+  }
+  // footer
+  .todo-footer {
+    // margin-left: 40px;
+  }
+
+  // todo-content
+  .todo-row {
+    display: flex;
+    & + .todo-row {
+      margin-top: 24px;
+    }
+  }
+  .todo-icon {
+    width: 24px;
+  }
+  .todo-form-control {
+    flex: 1;
+  }
+
+  // controller
+  .handle {
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    opacity: 0;
+    transform: translateY(-50%);
+    cursor: move;
+  }
+  &:hover .handle {
+    opacity: 1;
+  }
+}
