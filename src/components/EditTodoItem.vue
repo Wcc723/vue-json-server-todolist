@@ -65,12 +65,16 @@ export default {
   name: 'EditTodo',
   data () {
     return {
+      // 編輯的欄位都會先以 cacheTodo 暫存
+      // 避免直接編輯到原有的資料
       cacheTodo: {},
       comment: '',
+      // 判斷是否為新的資料，會觸發的 API 略有不同
       isNew: false
     }
   },
   methods: {
+    // 更新留言
     updateComment () {
       const vm = this
       const api = `http://localhost:5000/todos/${vm.todo.id}`
@@ -80,6 +84,7 @@ export default {
       const todo = {
         ...vm.todo
       }
+      // 留言使用 push 的方式新增，並與先前的全部加入到 Json-server 上
       todo.comments.push(vm.comment)
       vm.$http.put(api, todo).then((response) => {
         console.log(response)
@@ -87,17 +92,20 @@ export default {
         vm.$emit('updateData')
       })
     },
+    // 更新或新增 Todo
     updateTodo () {
       const vm = this
       const todo = {
         ...vm.cacheTodo
       }
+      // Message 不能為空
       if (!vm.cacheTodo.message) {
         alert('請輸入訊息')
         return
       }
       if (this.isNew) {
         const api = 'http://localhost:5000/todos'
+        // 假設是新的，預設加入一些欄位
         todo.timestamp = Math.floor(Date.now() / 1000)
         todo.stared = false
         todo.completed = 'progress'
@@ -108,6 +116,7 @@ export default {
         })
       } else {
         const api = `http://localhost:5000/todos/${vm.todo.id}`
+        // 假設是舊的，就推到指定 ID
         vm.$http.put(api, todo).then((response) => {
           console.log(response)
           vm.$emit('closeEditTodo')
@@ -116,15 +125,19 @@ export default {
       }
     },
     closeEdit () {
+      // 關閉內容時，讓外層了解並觸發
       this.$emit('closeEditTodo')
     }
   },
   watch: {
     todo () {
+      // 如果為舊有資料則使用解構傳至 cacheTodo 避免物件參考特性
       this.cacheTodo = { ...this.todo }
     }
   },
   created () {
+    // 判斷是否為新資料
+    // 如果為舊有資料則使用解構傳至 cacheTodo 避免物件參考特性
     if (!this.todo) {
       this.isNew = true
     } else {

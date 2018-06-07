@@ -51,9 +51,13 @@ export default {
   data () {
     return {
       message: '',
+      // TodoList 的資料，另外因為有排序功能，所以在此不會使用 computed
       todos: [],
+      // 當前編輯的內容
       currentEdit: {},
+      // 是否展開新的 todo
       isNewTodo: false,
+      // 判斷目前顯示的分頁
       currentTab: 'all'
     }
   },
@@ -63,30 +67,34 @@ export default {
     draggable
   },
   methods: {
-    openAddTodo () {
-
-    },
     addTodo () {
+      // 新增 Todo 的事件，同時移除其它目前開啟的 Todo
       this.isNewTodo = true
       this.currentEdit = {}
     },
     getData () {
+      // 每次新增內容都會取得資料，包含 Todos 及排序
       const vm = this
       const api = 'http://localhost:5000/todos'
       const sortApi = 'http://localhost:5000/sort'
       let todos = []
       vm.todos = []
+      // 取得 Todos
       vm.$http.get(api).then((response) => {
         todos = response.data
+        // 取得 排序
         return vm.$http.get(sortApi)
       }).then((response) => {
         const sortData = response.data.sort
+        // 有排序資料時，則開始整理排序
         if (sortData) {
+          // 整理出有對應 ID 的物件
           sortData.forEach((sortId, sortIndex) => {
             const todo = todos.find((item) => item.id === sortId)
             vm.todos.push(todo)
           })
           todos.forEach((todo) => {
+            // 沒有排序 id 的內容，依然要存回 todos 內
             const hasSort = sortData.some((sortId) => todo.id === sortId)
             if (!hasSort) {
               vm.todos.push(todo)
@@ -98,17 +106,21 @@ export default {
       })
     },
     editTodo (id) {
+      // 編輯 Todo，並把目前的 Todo 資訊傳入
       const vm = this
       this.isNewTodo = false
       vm.currentEdit = vm.todos.find((item) => item.id === id)
     },
     closeEdit () {
+      // 關閉 編輯
       this.currentEdit = {}
       this.isNewTodo = false
     },
     updateSort () {
+      // 排序後，更新排序內容
       const vm = this
       const api = 'http://localhost:5000/sort'
+      // 排序資料以 [...id] 的形式逐一加入
       const sort = vm.todos.map((item, index) => item.id)
       vm.$http.post(api, {sort}).then((response) => {
         console.log(response)
@@ -116,6 +128,7 @@ export default {
       })
     }
   },
+  // 元件啟動後，取得資料
   created () {
     const vm = this
     vm.getData()
@@ -123,7 +136,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+// 排序功能的樣式
 .sortable-ghost {
   opacity: .5;
   box-shadow: 0 0 0 2px blue;
@@ -133,6 +147,7 @@ export default {
   cursor: move;
 }
 
+// 動態效果，但後來移除不使用了
 /* .slide-enter-active {
   animation: flipInX .5s;
 }

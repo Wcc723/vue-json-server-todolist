@@ -6,7 +6,7 @@ import VueAxios from 'vue-axios'
 import 'animate.css'
 import './assets/all.scss'
 import App from './App'
-import dateFilter from './filters/date'
+import dateFilter from './filters/date' // TimeStamp 轉日期，後來沒有使用了
 
 Vue.use(VueAxios, axios)
 
